@@ -23,9 +23,11 @@ The repository held only a one-line README: no framework, components, styles or 
 | API client | Implemented | `src/api/client.ts`, `src/api/client.test.ts` |
 | Theme system (light/dark/system, no flash) | Implemented | `src/core/theme`, `index.html`, tests |
 | Floating shell (island, sidebar, dock, mobile bar/drawer) | Implemented | `src/layouts/app-shell`, `src/app/app.test.tsx` |
-| Design system v1 | Implemented | `src/shared/ui`, `src/styles/tokens.css`, design-system page |
+| Design system v1 | Implemented | `src/shared/ui`, `src/styles/tokens.css` |
+| Authentication (sign in/up, password reset, session refresh) | Implemented (OTP/PIN planned) | `src/features/auth`, `auth.test.tsx` |
+| Profile, avatar, settings, wallets | Implemented (sandbox) | `src/features/{account,settings,wallets}`, `account.test.tsx` |
 | Live API readiness | Implemented | `src/features/system-status` |
-| All payment features, auth, real-time, 3D, cursor, Developer Lab content | **Not implemented** | TASKS FE-003+ |
+| Payment flows, contacts, transactions, real-time, custom cursor, R3F 3D | **Not implemented** | TASKS FE-003, FE-007+ |
 
 ## Requirement interpretation and unknowns
 
