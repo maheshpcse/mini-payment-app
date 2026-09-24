@@ -40,6 +40,6 @@ Update after every work session: what changed, checks actually run, limits, next
 
 **Fixed after review:** sign-out notice was lost because the route guard's redirect replaced the navigation; sign-out now records the reason in the session store and the guard redirects with it. QR tile clipped at the top of the auth scene; coin and toast overlapping the mobile headline.
 
-**Not verified:** Safari/Firefox, live Pages + Railway cross-site cookie (needs `REFRESH_COOKIE_SAMESITE=none` and `JWT_SECRET` on Railway).
+**Not verified:** Safari/Firefox, live Pages + Railway cross-site cookie (needs `JWT_SECRET` set on Railway).
 
 **Next bounded task:** FE-003 remaining primitives (toast, OTP/PIN inputs), then OTP login with BE-007.

@@ -46,7 +46,7 @@ npm run preview:pages                          # serves at http://localhost:4173
 ## Security notes
 
 - Every `*.github.io` project site of the same account shares the origin `https://maheshpcse.github.io`, and therefore `localStorage`, cookies without a path and service-worker scope. Only non-sensitive preferences (theme, sidebar) use `localStorage` (prefixed `mini-pay.`). Access tokens must stay in memory (FE-004); never store tokens in `localStorage`.
-- Cross-site authentication: Pages and Railway are different sites, so refresh-token cookies are third-party. See "Known constraint for authentication" in the server's `docs/DEPLOYMENT.md`; the API therefore sets the refresh cookie with `SameSite=None; Secure; Partitioned` when deployed (Railway variable `REFRESH_COOKIE_SAMESITE=none`). Browsers that block all third-party cookies will sign the user out on reload; a custom domain for both (e.g. `pay.example.com` + `api.example.com`) remains the long-term fix.
+- Cross-site authentication: Pages and Railway are different sites, so refresh-token cookies are third-party. See "Known constraint for authentication" in the server's `docs/DEPLOYMENT.md`; the API therefore sets the refresh cookie with `SameSite=None; Secure; Partitioned` when deployed (the deployed default for `REFRESH_COOKIE_SAMESITE`). Browsers that block all third-party cookies will sign the user out on reload; a custom domain for both (e.g. `pay.example.com` + `api.example.com`) remains the long-term fix.
 - GitHub Pages cannot set response headers (CSP, HSTS preload, frame-ancestors). If those become requirements, front the site with a CDN or move static hosting.
 
 ## Troubleshooting
