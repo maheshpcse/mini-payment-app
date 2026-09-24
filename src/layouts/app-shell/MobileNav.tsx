@@ -1,9 +1,9 @@
 import { Menu } from 'lucide-react';
 import { NavLink } from 'react-router';
-import { MOBILE_NAV_IDS, PRIMARY_NAV } from '../../config/navigation';
+import { MOBILE_NAV_IDS, PAYMENT_NAV } from '../../config/navigation';
 import styles from './AppShell.module.css';
 
-const ITEMS = MOBILE_NAV_IDS.map((id) => PRIMARY_NAV.find((item) => item.id === id)!);
+const ITEMS = MOBILE_NAV_IDS.map((id) => PAYMENT_NAV.find((item) => item.id === id)!);
 
 export function MobileNav({ onOpenMenu }: { onOpenMenu(): void }) {
   return (
