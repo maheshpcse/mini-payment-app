@@ -21,3 +21,13 @@ Update after every work session: what changed, checks actually run, limits, next
 **Not verified:** CI run (FE-025); Playwright/axe automation; Safari/Firefox.
 
 **Next bounded task:** FE-003 (design system v2: dialog, toast, OTP/PIN/amount inputs). Auth UI (FE-004) waits for backend BE-004.
+
+## 24 September 2026 — GitHub Pages deployment
+
+**Done:** FE-026 (Pages workflow, `--mode pages` build with validated public settings, router basename, `404.html` fallback, `.nojekyll`, `docs/DEPLOYMENT.md`), modelled on miniHrmsUI but using a copied `index.html` as the fallback instead of a redirect script. The API side (Railway) is BE-032 in mini-payment-server.
+
+**Checks run:** `npm run check`; `build:pages` failing for missing and http/localhost API URLs; successful build with `/mini-payment-app/` asset prefixes and the API URL embedded; Chrome against a Pages-like server (no rewrites, 404.html for misses): deep link and unknown route render.
+
+**Not verified:** a live Pages deployment and the workflow run itself (needs repository settings and the `API_BASE_URL` variable).
+
+**Open question:** shared `maheshpcse.github.io` origin and cross-site refresh cookies — prefer custom domains before FE-004.
