@@ -1,0 +1,61 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # Public URL of the Railway API, e.g. https://YOUR-SERVICE.up.railway.app/api/v1.
+      # A repository variable (not a secret): it is embedded in the published JavaScript.
+      VITE_API_BASE_URL: ${{ vars.API_BASE_URL }}
+      VITE_APP_ENV: ${{ vars.APP_ENV || 'production' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Require API_BASE_URL
+        run: |
+          if [ -z "$VITE_API_BASE_URL" ]; then
+            echo "::error::Set the repository variable API_BASE_URL (Settings > Secrets and variables > Actions > Variables)."
+            exit 1
+          fi
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - name: Build Pages site
+        run: npm run build:pages
+        env:
+          PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish Pages artifact
+        id: deployment
+        uses: actions/deploy-pages@v4

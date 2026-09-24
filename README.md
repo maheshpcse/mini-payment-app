@@ -32,9 +32,14 @@ npm run dev        # http://localhost:5173
 | --- | --- |
 | `npm run dev` | Vite dev server on port 5173 |
 | `npm run build` / `npm run preview` | Type-check + production build / serve the build |
+| `npm run build:pages` / `preview:pages` | GitHub Pages build (repository base path, validated HTTPS API URL, `404.html` fallback) — see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) |
 | `npm run lint` / `npm run typecheck` | ESLint / TypeScript project build |
 | `npm test` | Vitest + Testing Library (jsdom) |
 | `npm run check` | lint + typecheck + tests + build (what CI runs, plus `npm audit`) |
+
+## Deployment
+
+GitHub Pages for this app, Railway for the API: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Documentation
 
