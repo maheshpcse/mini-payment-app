@@ -1,0 +1,43 @@
+.island {
+  position: relative;
+  padding: var(--space-6);
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-primary);
+  box-shadow: var(--shadow-soft);
+}
+
+.island {
+  border-radius: var(--radius-island);
+}
+
+.island-alt {
+  border-radius: var(--radius-island-alt);
+}
+
+.glass {
+  background: var(--surface-glass);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+}
+
+/* Gradient hairline border drawn with a masked pseudo-element so content stays readable. */
+.signature {
+  background: var(--surface-elevated);
+  border-color: transparent;
+  box-shadow: var(--shadow-floating);
+}
+
+.signature::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--gradient-signature);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+}
