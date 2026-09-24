@@ -29,3 +29,18 @@ export function formatAmountParts(amountMinor: number, currency: CurrencyCode = 
   const sign = negative ? '-' : '';
   return { sign, symbol: meta.symbol, whole, fraction, text: `${sign}${meta.symbol}${whole}.${fraction}` };
 }
+
+const INR_FORMATTER = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 2 });
+
+export function formatInr(amountMinor: number): string {
+  return INR_FORMATTER.format(amountMinor / 100);
+}
+
+/** Parses user input such as "10,000" or "2500.50" into paise; null when invalid. */
+export function parseRupeesToMinor(input: string): number | null {
+  const cleaned = input.replace(/[₹,\s]/g, '');
+  if (!/^\d+(\.\d{1,2})?$/.test(cleaned)) return null;
+  const [rupees, paise = ''] = cleaned.split('.');
+  const minor = Number(rupees) * 100 + Number(paise.padEnd(2, '0'));
+  return Number.isSafeInteger(minor) ? minor : null;
+}

@@ -1,0 +1,71 @@
+.avatar {
+  --avatar-size: 40px;
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  overflow: hidden;
+  border-radius: calc(var(--avatar-size) * 0.36) calc(var(--avatar-size) * 0.36) calc(var(--avatar-size) * 0.36) calc(var(--avatar-size) * 0.14);
+  background: var(--avatar-bg, var(--gradient-signature));
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  user-select: none;
+}
+
+.sm {
+  --avatar-size: 32px;
+  font-size: 0.78rem;
+}
+
+.md {
+  --avatar-size: 40px;
+  font-size: 0.95rem;
+}
+
+.lg {
+  --avatar-size: 72px;
+  font-size: 1.55rem;
+}
+
+.xl {
+  --avatar-size: 128px;
+  font-size: 2.6rem;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.initials {
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.18);
+}
+
+.avatar[data-palette='violet'] {
+  --avatar-bg: linear-gradient(135deg, #1400c3, #6c5ce7);
+}
+
+.avatar[data-palette='ocean'] {
+  --avatar-bg: linear-gradient(135deg, #0873c4, #00b8b0);
+}
+
+.avatar[data-palette='ember'] {
+  --avatar-bg: linear-gradient(135deg, #ff4e02, #ba0001);
+}
+
+.avatar[data-palette='mint'] {
+  --avatar-bg: linear-gradient(135deg, #00775f, #00b894);
+}
+
+.avatar[data-palette='rose'] {
+  --avatar-bg: linear-gradient(135deg, #c2185b, #ff6b9d);
+}
+
+.avatar[data-palette='amber'] {
+  --avatar-bg: linear-gradient(135deg, #9a5200, #e1a100);
+}

@@ -14,6 +14,10 @@ export interface RequestOptions {
   retries?: number;
   /** Treat these HTTP statuses as successful responses (e.g. 503 from readiness). */
   acceptStatuses?: number[];
+  /** Binary upload (e.g. an avatar image) sent as-is with its own Content-Type. */
+  rawBody?: Blob;
+  /** Do not attach the access token or attempt a refresh (auth endpoints themselves). */
+  anonymous?: boolean;
 }
 
 export interface ApiResponse<T> {
@@ -28,6 +32,14 @@ export interface ApiClientOptions {
   defaultTimeoutMs?: number;
   retryDelayMs?: number;
 }
+
+export interface AuthHooks {
+  getAccessToken(): string | null;
+  /** Single-flight refresh; resolves to the new token or null when the session is gone. */
+  refreshAccessToken(): Promise<string | null>;
+}
+
+const REFRESHABLE_CODES = new Set(['UNAUTHENTICATED', 'AUTH_SESSION_EXPIRED']);
 
 const RETRYABLE_STATUSES = new Set([502, 503, 504]);
 
@@ -77,8 +89,9 @@ function toServerError(status: number, body: unknown, requestId: string | undefi
 
 export function createApiClient({ baseUrl, fetchImpl, defaultTimeoutMs = 10_000, retryDelayMs = 400 }: ApiClientOptions) {
   const doFetch = fetchImpl ?? ((...args: Parameters<typeof fetch>) => globalThis.fetch(...args));
+  let auth: AuthHooks | null = null;
 
-  async function attempt<T>(path: string, options: RequestOptions, requestId: string): Promise<ApiResponse<T>> {
+  async function attempt<T>(path: string, options: RequestOptions, requestId: string, token: string | null): Promise<ApiResponse<T>> {
     const controller = new AbortController();
     let timedOut = false;
     const timer = setTimeout(() => {
@@ -91,13 +104,15 @@ export function createApiClient({ baseUrl, fetchImpl, defaultTimeoutMs = 10_000,
     try {
       const headers: Record<string, string> = { Accept: 'application/json', 'X-Request-Id': requestId, ...options.headers };
       if (options.body !== undefined) headers['Content-Type'] = 'application/json';
+      if (options.rawBody) headers['Content-Type'] = options.rawBody.type || 'application/octet-stream';
+      if (token) headers.Authorization = `Bearer ${token}`;
 
       let response: Response;
       try {
         response = await doFetch(`${baseUrl}${path}`, {
           method: options.method ?? 'GET',
           headers,
-          body: options.body === undefined ? undefined : JSON.stringify(options.body),
+          body: options.rawBody ?? (options.body === undefined ? undefined : JSON.stringify(options.body)),
           signal: controller.signal,
           credentials: 'include',
         });
@@ -126,10 +141,23 @@ export function createApiClient({ baseUrl, fetchImpl, defaultTimeoutMs = 10_000,
     // One id per logical request so server logs correlate all retry attempts.
     const requestId = createRequestId();
 
+    let token = options.anonymous ? null : (auth?.getAccessToken() ?? null);
+    let refreshed = false;
+
     for (let attemptNumber = 0; ; attemptNumber += 1) {
       try {
-        return await attempt<T>(path, options, requestId);
+        return await attempt<T>(path, options, requestId, token);
       } catch (err) {
+        // An expired access token is refreshed once, then the original request is replayed.
+        if (auth && !options.anonymous && !refreshed && err instanceof ApiError && err.status === 401 && REFRESHABLE_CODES.has(err.code)) {
+          refreshed = true;
+          token = await auth.refreshAccessToken();
+          if (token) {
+            attemptNumber -= 1;
+            continue;
+          }
+          throw err;
+        }
         const retryable =
           err instanceof ApiError &&
           (err.code === 'NETWORK_ERROR' || err.code === 'TIMEOUT' || RETRYABLE_STATUSES.has(err.status));
@@ -139,7 +167,12 @@ export function createApiClient({ baseUrl, fetchImpl, defaultTimeoutMs = 10_000,
     }
   }
 
-  return { request };
+  return {
+    request,
+    setAuthHooks(hooks: AuthHooks | null) {
+      auth = hooks;
+    },
+  };
 }
 
 export type ApiClient = ReturnType<typeof createApiClient>;
