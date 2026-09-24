@@ -240,7 +240,9 @@
 
 .sidebarScroll {
   flex: 1;
+  overflow-x: hidden;
   overflow-y: auto;
+  scrollbar-gutter: stable;
   padding: var(--space-2) var(--space-3) var(--space-4);
 }
 
@@ -330,6 +332,7 @@
 
 .navLabel {
   flex: 1;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -344,6 +347,7 @@
 }
 
 .plannedTag {
+  flex: none;
   padding: 1px 7px;
   border-radius: var(--radius-pill);
   background: var(--surface-tint);
