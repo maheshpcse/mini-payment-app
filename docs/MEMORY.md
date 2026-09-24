@@ -16,7 +16,7 @@ Update after every work session: what changed, checks actually run, limits, next
 
 **Checks run:** `npm run check` → lint, typecheck, 42 tests, production build passing. Browser walkthrough against the live backend (MongoDB 8.2.6 replica set + Redis 7.0.15): light and dark home, API online indicator, sidebar collapse and right-side docking, planned Pay page, design-system page (floating labels, loading button), 404, mobile 390 px with bottom bar and drawer (Esc closes).
 
-**Fixed after review:** sidebar showed a horizontal scrollbar and clipped "Soon" tags on long Lab labels (missing `min-width: 0` on the flex label); decorative orb overlapped the sandbox-wallet copy.
+**Fixed after review:** sidebar showed a horizontal scrollbar and clipped "Soon" tags on long Lab labels (grid column sized to the longest item; fixed with `minmax(0, 1fr)` + `min-width: 0` so labels ellipsize); decorative orb overlapped the sandbox-wallet copy. Re-verified with headless Chrome screenshots at 1440×1300 (light home, dark design-system page).
 
 **Not verified:** CI run (FE-025); Playwright/axe automation; Safari/Firefox.
 
