@@ -1,0 +1,109 @@
+.field {
+  --field-accent: var(--payment-primary);
+  display: grid;
+  gap: 6px;
+}
+
+.shell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 58px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md) var(--radius-md) var(--radius-md) var(--radius-xs);
+  background: var(--surface-elevated);
+  transition:
+    border-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+.shell:hover {
+  border-color: color-mix(in srgb, var(--field-accent) 55%, var(--border-strong));
+}
+
+.shell:focus-within {
+  border-color: var(--field-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--field-accent) 18%, transparent);
+}
+
+.leading {
+  display: inline-flex;
+  margin-right: var(--space-3);
+  color: var(--text-muted);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 22px 0 8px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: var(--text-md);
+}
+
+.input:disabled {
+  cursor: not-allowed;
+  color: var(--text-muted);
+}
+
+.label {
+  position: absolute;
+  top: 50%;
+  left: var(--space-4);
+  color: var(--text-muted);
+  pointer-events: none;
+  transform: translateY(-50%);
+  transform-origin: left center;
+  transition:
+    transform var(--duration-base) var(--ease-out),
+    color var(--duration-base) var(--ease-out);
+}
+
+.leading + .input + .label {
+  left: calc(var(--space-4) + 20px + var(--space-3));
+}
+
+.input:focus + .label,
+.input:not(:placeholder-shown) + .label {
+  transform: translateY(-112%) scale(0.78);
+  color: var(--field-accent);
+}
+
+.valid {
+  --field-accent: var(--payment-success);
+}
+
+.valid .shell {
+  border-color: var(--payment-success);
+}
+
+.invalid {
+  --field-accent: var(--payment-danger);
+}
+
+.invalid .shell {
+  border-color: var(--payment-danger);
+}
+
+.hint,
+.error {
+  padding-left: var(--space-4);
+  font-size: var(--text-xs);
+}
+
+.hint {
+  color: var(--text-muted);
+}
+
+.error {
+  color: var(--payment-danger);
+  font-weight: 600;
+}
+
+.field:has(.input:disabled) .shell {
+  background: var(--surface-sunken);
+  border-style: dashed;
+}
