@@ -35,6 +35,7 @@ Delivery order (master prompt §45): Foundation → Design System → Authentica
 | FE-023 | P2 | Performance | Route-level code splitting; bundle budget in CI; font subset review; image/3D budgets; Web Vitals reporting hook | Build report within budget | FE-006 | Planned |
 | FE-024 | P1 | Money requests | Create, share, status, cancel, remind, paid/expired states | Tests | FE-008, BE-017 | Planned |
 | FE-025 | P1 | CI validation | GitHub Actions workflow runs green on PR | CI link | FE-001 | Ready |
+| FE-026 | P1 | Deployment | GitHub Pages deployment | `deploy-pages.yml` (lint, test, `build:pages`, Pages artifact + deploy); `--mode pages` base path from `configure-pages`; router basename; build fails on missing/insecure API URL; `404.html` SPA fallback + `.nojekyll`; `docs/DEPLOYMENT.md` | `build/github-pages.test.ts`; `build:pages` rejected invalid config and produced prefixed assets; Pages-like static server: deep link `/lab/design-system` and unknown route rendered in Chrome | FE-001 | Done |
 
 ## Evidence
 

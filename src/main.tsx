@@ -10,7 +10,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import { AppProviders } from './app/AppProviders';
 import { routes } from './app/routes';
 
-const router = createBrowserRouter(routes);
+// BASE_URL is "/" locally and "/<repository>/" on GitHub Pages.
+const router = createBrowserRouter(routes, { basename: import.meta.env.BASE_URL.replace(/\/$/, '') || '/' });
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
