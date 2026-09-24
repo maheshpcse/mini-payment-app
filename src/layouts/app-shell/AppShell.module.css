@@ -326,15 +326,13 @@
   text-overflow: ellipsis;
 }
 
-/* Collapsed rail: no reserved scrollbar gutter, so icons sit on the rail's centre line. */
+/* Collapsed rail: the gutter is reserved on both edges so icons stay on the rail's centre line
+   while short viewports still show a (thin) scrollbar. */
 .sidebar[data-collapsed='true'] .sidebarScroll {
   padding-inline: 0;
-  scrollbar-gutter: auto;
-  scrollbar-width: none;
-}
-
-.sidebar[data-collapsed='true'] .sidebarScroll::-webkit-scrollbar {
-  display: none;
+  scrollbar-gutter: stable both-edges;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
 }
 
 .sidebar[data-collapsed='true'] .navList {

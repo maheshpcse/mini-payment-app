@@ -27,7 +27,7 @@
 .showcaseCopy {
   position: relative;
   z-index: 2;
-  max-width: 34ch;
+  max-width: 30rem;
 }
 
 .eyebrow {
@@ -93,7 +93,7 @@
 
 .stage {
   position: absolute;
-  top: 10%;
+  top: max(96px, 14%);
   left: 50%;
   width: 420px;
   height: 340px;
@@ -371,12 +371,17 @@
   }
 
   .stage {
-    top: -10px;
+    top: 10px;
     left: auto;
     right: -60px;
     margin: 0;
     scale: 0.62;
     transform-origin: top right;
+  }
+
+  .coin,
+  .toast {
+    display: none;
   }
 
   .panel {
@@ -390,11 +395,13 @@
 
 @media (max-width: 480px) {
   .showcaseTitle {
+    max-width: 68%;
     font-size: 1.5rem;
   }
 
   .stage {
-    opacity: 0.55;
+    right: -150px;
+    opacity: 0.5;
   }
 }
 
