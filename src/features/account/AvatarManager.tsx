@@ -7,6 +7,7 @@ import { Avatar } from '../../shared/ui/Avatar';
 import { Button } from '../../shared/ui/Button';
 import { Dialog } from '../../shared/ui/Dialog';
 import { apiAssetUrl } from '../auth/auth-api';
+import { DemoNotice } from '../auth/DemoNotice';
 import type { User } from '../auth/types';
 import { profileApi, useProfileMutation } from './account-api';
 import styles from './Account.module.css';
@@ -106,12 +107,13 @@ export function AvatarManager({ user, onStatus }: { user: User; onStatus(message
             <Avatar name={user.fullName} initials={user.initials} size="xl" />
           )}
           {error && <Alert tone="danger" title={error} />}
+          {user.isDemo && <DemoNotice>The demo account's photo cannot be changed.</DemoNotice>}
           <div className={styles.formActions}>
-            <Button icon={<ImageUp size={18} />} onClick={choose} loading={processing} loadingLabel="Preparing photo">
+            <Button icon={<ImageUp size={18} />} onClick={choose} loading={processing} loadingLabel="Preparing photo" disabled={user.isDemo}>
               {avatarSrc ? 'Change photo' : 'Upload photo'}
             </Button>
             {avatarSrc && (
-              <Button variant="ghost" icon={<Trash2 size={18} />} onClick={() => void confirmRemove()} loading={remove.isPending} loadingLabel="Removing photo">
+              <Button variant="ghost" icon={<Trash2 size={18} />} onClick={() => void confirmRemove()} loading={remove.isPending} loadingLabel="Removing photo" disabled={user.isDemo}>
                 Remove
               </Button>
             )}

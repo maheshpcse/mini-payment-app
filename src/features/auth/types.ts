@@ -10,6 +10,8 @@ export interface User {
   /** Relative to the API base URL, e.g. `/avatars/<id>`; null when no avatar is set. */
   avatarUrl: string | null;
   roles: string[];
+  /** Shared demo login: the API rejects password, profile, avatar and session changes. */
+  isDemo?: boolean;
   createdAt: string;
 }
 

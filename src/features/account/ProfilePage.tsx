@@ -5,6 +5,7 @@ import { formatPhone } from '../../shared/lib/validation';
 import { Alert } from '../../shared/ui/Alert';
 import { Island } from '../../shared/ui/Island';
 import { StatusPill } from '../../shared/ui/StatusPill';
+import { DemoNotice } from '../auth/DemoNotice';
 import { useCurrentUser } from '../auth/useSession';
 import styles from './Account.module.css';
 import { AvatarManager } from './AvatarManager';
@@ -30,11 +31,14 @@ export function ProfilePage() {
           <h1>Profile</h1>
           <p>How you appear to the people you pay.</p>
         </div>
-        <Link to="/profile/edit" className={styles.headerAction}>
-          <PencilLine size={18} aria-hidden="true" /> Edit profile
-        </Link>
+        {!user.isDemo && (
+          <Link to="/profile/edit" className={styles.headerAction}>
+            <PencilLine size={18} aria-hidden="true" /> Edit profile
+          </Link>
+        )}
       </header>
 
+      {user.isDemo && <DemoNotice>You are signed in to a shared demo account, so its name, photo, password and devices cannot be changed. Payment methods and settings can be tried freely.</DemoNotice>}
       {status && <Alert tone="success" title={status} />}
 
       <Island aria-label="Profile summary">
@@ -56,7 +60,7 @@ export function ProfilePage() {
               </span>
             </div>
             <div>
-              <StatusPill tone="accent">Sandbox account</StatusPill>
+              <StatusPill tone="accent">{user.isDemo ? 'Demo account' : 'Sandbox account'}</StatusPill>
             </div>
           </div>
         </div>
@@ -88,7 +92,7 @@ export function ProfilePage() {
             </div>
             <div>
               <dt>Mobile</dt>
-              <dd>{user.phone ? formatPhone(user.phone) : <Link to="/profile/edit">Add a mobile number</Link>}</dd>
+              <dd>{user.phone ? formatPhone(user.phone) : user.isDemo ? 'Not set' : <Link to="/profile/edit">Add a mobile number</Link>}</dd>
             </div>
             <div>
               <dt>MiNi Pay ID</dt>

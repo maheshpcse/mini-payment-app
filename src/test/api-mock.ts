@@ -12,6 +12,7 @@ export const TEST_USER: User = {
   phone: null,
   avatarUrl: null,
   roles: ['USER'],
+  isDemo: false,
   createdAt: '2026-01-15T10:00:00.000Z',
 };
 

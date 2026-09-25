@@ -10,6 +10,7 @@ import { Button } from '../../shared/ui/Button';
 import { Island } from '../../shared/ui/Island';
 import { TextField } from '../../shared/ui/TextField';
 import { apiAssetUrl } from '../auth/auth-api';
+import { DemoNotice } from '../auth/DemoNotice';
 import { useCurrentUser } from '../auth/useSession';
 import { profileApi, useProfileMutation } from './account-api';
 import styles from './Account.module.css';
@@ -73,29 +74,32 @@ export function EditProfilePage() {
               {user.avatarUrl ? 'Change your photo from the profile page.' : 'Without a photo, your initials are shown and update as you type.'}
             </p>
           </div>
+          {user.isDemo && <DemoNotice>The demo profile is shared, so its details cannot be edited.</DemoNotice>}
           {formError && <Alert tone="danger" title={formError} />}
-          <div className={styles.formRow}>
-            <TextField label="First name" autoComplete="given-name" value={values.firstName} onChange={set('firstName')} error={errors.firstName} leading={<UserRound size={18} />} />
-            <TextField label="Last name" autoComplete="family-name" value={values.lastName} onChange={set('lastName')} error={errors.lastName} />
-          </div>
-          <TextField
-            label="Mobile number"
-            type="tel"
-            inputMode="tel"
-            autoComplete="tel-national"
-            value={values.phone}
-            onChange={set('phone')}
-            error={errors.phone}
-            hint="Needed for SMS alerts. Leave empty to remove."
-            leading={<Smartphone size={18} />}
-          />
+          <fieldset className={styles.fieldset} disabled={user.isDemo === true}>
+            <div className={styles.formRow}>
+              <TextField label="First name" autoComplete="given-name" value={values.firstName} onChange={set('firstName')} error={errors.firstName} leading={<UserRound size={18} />} />
+              <TextField label="Last name" autoComplete="family-name" value={values.lastName} onChange={set('lastName')} error={errors.lastName} />
+            </div>
+            <TextField
+              label="Mobile number"
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel-national"
+              value={values.phone}
+              onChange={set('phone')}
+              error={errors.phone}
+              hint="Needed for SMS alerts. Leave empty to remove."
+              leading={<Smartphone size={18} />}
+            />
+          </fieldset>
           <TextField label="Email" value={user.email} disabled hint="Changing email needs verification, which arrives with OTP support (BE-007)." leading={<Mail size={18} />} />
           <div className={styles.formActions}>
-            <Button type="submit" loading={update.isPending} loadingLabel="Saving profile">
+            <Button type="submit" loading={update.isPending} loadingLabel="Saving profile" disabled={user.isDemo}>
               Save changes
             </Button>
             <Button variant="secondary" onClick={() => navigate('/profile')}>
-              Cancel
+              {user.isDemo ? 'Back to profile' : 'Cancel'}
             </Button>
           </div>
         </form>

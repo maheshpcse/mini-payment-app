@@ -34,6 +34,8 @@ Delivery order (master prompt §45): Foundation → Design System → Authentica
 | FE-024 | P1 | Money requests | Create, share, status, cancel, remind, paid/expired states | Tests | FE-008, BE-017 | Planned |
 | FE-025 | P1 | CI validation | GitHub Actions workflow runs green on PR | CI link | FE-001 | Ready |
 | FE-026 | P1 | Deployment | GitHub Pages deployment | `deploy-pages.yml` (lint, test, `build:pages`, Pages artifact + deploy); `--mode pages` base path from `configure-pages`; router basename; build fails on missing/insecure API URL; `404.html` SPA fallback + `.nojekyll`; `docs/DEPLOYMENT.md` | `build/github-pages.test.ts`; `build:pages` rejected invalid config and produced prefixed assets; Pages-like static server: deep link and unknown route rendered in Chrome | FE-001 | Done |
+| FE-027 | P1 | Demo login | One-click demo sign-in on the login page (`VITE_DEMO_LOGIN`); `isDemo` users see a shared-account notice and restricted controls (profile edit, avatar, password, sign out everywhere) disabled; auth showcase pinned while the form column scrolls; `docs/MASTER_DATA.md` | Tests for demo sign-in and disabled controls; browser check against the seeded API | FE-004, BE-036 | Done |
+| FE-028 | P2 | Staff console | Render navigation from `GET /menus`; ADMINISTRATION pages for users, payments, refunds, billers, limits, reconciliation, roles, settings, audit log, reports, each gated by its permission | Tests per role; E2E with staff demo accounts | FE-027, BE-005, BE-006 | Planned |
 
 ## Evidence
 
@@ -50,3 +52,11 @@ Delivery order (master prompt §45): Foundation → Design System → Authentica
 - `npm run check` → lint, typecheck, 10 files / 108 tests, production build passing.
 - Headless Chrome against the local API (MongoDB replica set + Redis): login → home, collapse + tooltip (light, dark, right-side), avatar upload shown in the nav island, UPI add via handle chip, bank link with "HDFC Bank detected" and masked `•••• 9012`, settings pages, sign out notice, 390 / 768 / 1440 px auth pages. Screenshots were reviewed; clipped QR tile and mobile headline overlap were fixed and re-checked.
 - **Not done:** OTP, PIN, device confirmation, biometrics (FE-004); ledger balance, recent activity (FE-006, needs BE-010); 2FA, recent logins (FE-015); real email / SMS / push delivery (BE-015).
+
+### FE-027 — Demo login and pinned auth showcase (Done, 25 Sep 2026)
+
+- `npm run check` → lint, typecheck, 10 files / 112 tests, production build passing.
+- `auth.test.tsx`: demo button signs in with `demo@example.com` / `MiniPay@2026` and lands on home. `account.test.tsx`: for `isDemo` users the password form, "Sign out of all devices", photo upload and profile fields are disabled, and the "Edit profile" link is hidden.
+- Headless Chrome against the local API after `npm run migrate` in mini-payment-server: one-click demo sign-in, seeded UPI ID and bank account on Wallets, restricted security and profile pages; on `/signup` at 1440 × 800 the left showcase stays in place while the page scrolls to the submit button; 390 px layout unchanged.
+- **Not done:** navigation from `GET /menus` and the staff console (FE-028); forms reading `GET /masters` (bank list and UPI handles are still local copies).
+

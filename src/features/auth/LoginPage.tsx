@@ -1,6 +1,8 @@
-import { LogIn, Mail } from 'lucide-react';
+import { LogIn, Mail, Sparkles } from 'lucide-react';
 import { useState, type FormEvent } from 'react';
 import { Link, useLocation, useSearchParams } from 'react-router';
+import { DEMO_LOGINS, DEMO_PASSWORD } from '../../config/demo';
+import { appConfig } from '../../config/env';
 import { errorMessage } from '../../shared/lib/form-errors';
 import { validators } from '../../shared/lib/validation';
 import { Alert } from '../../shared/ui/Alert';
@@ -19,22 +21,32 @@ export function LoginPage() {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
   const [formError, setFormError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState<'form' | string | null>(null);
 
-  async function onSubmit(event: FormEvent) {
+  async function signIn(credentials: { email: string; password: string }, source: string) {
+    setSubmitting(source);
+    setFormError(null);
+    try {
+      sessionStore.setGrant(await authApi.login(credentials));
+    } catch (err) {
+      setFormError(errorMessage(err, 'Sign-in failed. Please try again.'));
+      setSubmitting(null);
+    }
+  }
+
+  function onSubmit(event: FormEvent) {
     event.preventDefault();
     const next = { email: validators.email(email), password: password ? undefined : 'Password is required' };
     setErrors(next);
     if (next.email || next.password) return;
+    void signIn({ email: email.trim(), password }, 'form');
+  }
 
-    setSubmitting(true);
-    setFormError(null);
-    try {
-      sessionStore.setGrant(await authApi.login({ email: email.trim(), password }));
-    } catch (err) {
-      setFormError(errorMessage(err, 'Sign-in failed. Please try again.'));
-      setSubmitting(false);
-    }
+  function signInAsDemo(demoEmail: string) {
+    setEmail(demoEmail);
+    setPassword(DEMO_PASSWORD);
+    setErrors({});
+    void signIn({ email: demoEmail, password: DEMO_PASSWORD }, demoEmail);
   }
 
   return (
@@ -72,10 +84,46 @@ export function LoginPage() {
             Forgot password?
           </Link>
         </div>
-        <Button type="submit" size="lg" className={styles.submit} loading={submitting} loadingLabel="Signing in" icon={<LogIn size={18} />}>
+        <Button
+          type="submit"
+          size="lg"
+          className={styles.submit}
+          loading={submitting === 'form'}
+          disabled={submitting !== null}
+          loadingLabel="Signing in"
+          icon={<LogIn size={18} />}
+        >
           Sign in
         </Button>
       </form>
+      {appConfig.demoLogin && (
+        <section className={styles.demo} aria-labelledby="demo-title">
+          <h2 id="demo-title" className={styles.demoTitle}>
+            <Sparkles size={16} aria-hidden="true" /> Try a demo account
+          </h2>
+          <ul className={styles.demoList}>
+            {DEMO_LOGINS.map((demo) => (
+              <li key={demo.email}>
+                <Button
+                  variant="secondary"
+                  className={styles.demoButton}
+                  onClick={() => signInAsDemo(demo.email)}
+                  loading={submitting === demo.email}
+                  disabled={submitting !== null}
+                  loadingLabel={`Signing in as ${demo.name}`}
+                >
+                  <span className={styles.demoName}>Sign in as {demo.name}</span>
+                  <span className={styles.demoMeta}>{demo.role}</span>
+                </Button>
+              </li>
+            ))}
+          </ul>
+          <p className={styles.demoCredentials}>
+            Or type <code>{DEMO_LOGINS[0].email}</code> with password <code>{DEMO_PASSWORD}</code>. Demo accounts are shared, so profile, password and
+            device changes are turned off.
+          </p>
+        </section>
+      )}
       <p className={styles.switch}>
         New to MiNi Pay?{' '}
         <Link to={{ pathname: '/signup', search: location.search }} className={styles.link}>

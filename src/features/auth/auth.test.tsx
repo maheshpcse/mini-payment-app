@@ -40,6 +40,19 @@ describe('sign in', () => {
     expect(api.callsTo('POST /auth/login')).toHaveLength(0);
   });
 
+  it('signs in with a demo account in one click', async () => {
+    const demoUser = { ...TEST_USER, email: 'demo@example.com', firstName: 'Priya', fullName: 'Priya Sharma', isDemo: true };
+    const api = mockApi({ 'POST /auth/login': { body: { data: grantFor(demoUser) } } });
+    const { router } = renderApp('/login', { user: null });
+
+    expect(await screen.findByRole('heading', { name: 'Try a demo account' })).toBeInTheDocument();
+    expect(screen.getByText('MiniPay@2026')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: /Sign in as Priya Sharma/ }));
+
+    await waitFor(() => expect(router.state.location.pathname).toBe('/'));
+    expect(api.callsTo('POST /auth/login')[0]?.body).toEqual({ email: 'demo@example.com', password: 'MiniPay@2026' });
+  });
+
   it('toggles password visibility', async () => {
     mockApi();
     renderApp('/login', { user: null });

@@ -30,6 +30,8 @@ npm install
 npm run dev        # http://localhost:5173
 ```
 
+Demo login (after `npm run migrate` in mini-payment-server): `demo@example.com` / `MiniPay@2026`, or use the buttons on the sign-in page. See [docs/MASTER_DATA.md](docs/MASTER_DATA.md).
+
 ## Scripts
 
 | Command | Purpose |
@@ -54,6 +56,7 @@ Start with [docs/PROJECT_ANALYSIS.md](docs/PROJECT_ANALYSIS.md), then [RULES.md]
 | [PRD](docs/PRD.md) | Product scope and acceptance |
 | [Architecture](docs/ARCHITECTURE.md) | Structure, state boundaries, API layer, routing |
 | [Design](docs/DESIGN.md) | Visual identity, tokens, typography, motion, accessibility |
+| [Master data](docs/MASTER_DATA.md) | Demo logins, menus and master data the app relies on |
 | [Security](docs/SECURITY.md) | Client-side security posture |
 | [Test plan](docs/TEST_PLAN.md) | Test matrix and current results |
 | [Decisions](docs/DECISIONS.md) | ADRs |

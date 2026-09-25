@@ -43,3 +43,10 @@ Update after every work session: what changed, checks actually run, limits, next
 **Not verified:** Safari/Firefox, live Pages + Railway cross-site cookie (needs `JWT_SECRET` set on Railway).
 
 **Next bounded task:** FE-003 remaining primitives (toast, OTP/PIN inputs), then OTP login with BE-007.
+
+## 25 September 2026 — Demo login and pinned auth showcase
+
+**Done:** FE-027. Login page offers one-click demo sign-in (Priya and Rahul, password `MiniPay@2026`, seeded by the API's migration 0003). Demo users see a "Shared demo account" notice and the controls the API rejects are disabled. The auth pages' 3D showcase is now `position: sticky` at full viewport height on wide screens, so only the form column scrolls. Reference data and demo accounts are summarised in [MASTER_DATA.md](MASTER_DATA.md).
+
+**Next bounded task:** FE-003 remaining primitives, then FE-028 once BE-005 `requireRole` exists.
+

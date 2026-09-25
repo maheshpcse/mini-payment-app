@@ -1,18 +1,23 @@
 .page {
+  --auth-pad: var(--space-4);
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  align-items: start;
   gap: var(--space-4);
   min-height: 100dvh;
-  padding: var(--space-4);
+  padding: var(--auth-pad);
 }
 
 /* ---------- Showcase (3D) ---------- */
+/* Pinned to the viewport on wide screens so only the form column scrolls (e.g. the long sign-up form). */
 .showcase {
-  position: relative;
+  position: sticky;
+  top: var(--auth-pad);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  min-height: 560px;
+  height: calc(100dvh - 2 * var(--auth-pad));
+  min-height: 480px;
   overflow: hidden;
   padding: var(--space-10);
   border-radius: 34px 34px 34px 12px;
@@ -271,6 +276,7 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  min-height: calc(100dvh - 2 * var(--auth-pad));
   padding: var(--space-2) var(--space-6);
 }
 
@@ -356,12 +362,15 @@
 
 @media (max-width: 959px) {
   .page {
+    --auth-pad: var(--space-3);
     grid-template-columns: minmax(0, 1fr);
-    padding: var(--space-3);
   }
 
   .showcase {
+    position: relative;
+    top: auto;
     order: -1;
+    height: auto;
     min-height: 220px;
     padding: var(--space-5);
   }
@@ -385,6 +394,7 @@
   }
 
   .panel {
+    min-height: 0;
     padding: 0 var(--space-2);
   }
 
