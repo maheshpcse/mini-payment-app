@@ -11,6 +11,7 @@ import { SignupPage } from '../features/auth/SignupPage';
 import { NotFoundPage } from '../features/errors/NotFoundPage';
 import { RouteErrorPage } from '../features/errors/RouteErrorPage';
 import { HomePage } from '../features/home/HomePage';
+import { LandingPage } from '../features/landing/LandingPage';
 import { PlannedFeaturePage } from '../features/planned/PlannedFeaturePage';
 import { GeneralSettingsPage } from '../features/settings/GeneralSettingsPage';
 import { NotificationSettingsPage } from '../features/settings/NotificationSettingsPage';
@@ -26,6 +27,7 @@ const plannedRoutes: RouteObject[] = ALL_NAV.filter((item) => item.task).map((it
 }));
 
 export const routes: RouteObject[] = [
+  { path: 'welcome', element: <LandingPage />, errorElement: <RouteErrorPage /> },
   {
     element: <AuthLayout />,
     errorElement: <RouteErrorPage />,
