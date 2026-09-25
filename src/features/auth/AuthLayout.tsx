@@ -42,7 +42,7 @@ export function AuthLayout() {
 
       <div className={styles.panel}>
         <header className={styles.panelHeader}>
-          <Link to="/login" className={styles.brand} aria-label="MiNi Pay sign in">
+          <Link to="/welcome" className={styles.brand} aria-label="MiNi Pay home">
             <BrandMark />
           </Link>
           <ThemeSwitcher />

@@ -50,3 +50,7 @@ Update after every work session: what changed, checks actually run, limits, next
 
 **Next bounded task:** FE-003 remaining primitives, then FE-028 once BE-005 `requireRole` exists.
 
+## 25 September 2026 — Landing page
+
+**Done:** FE-029. Public landing page at `/welcome`; signed-out visitors to the site root (including the GitHub Pages URL) arrive there instead of the sign-in form. The feature grid is generated from `navigation.ts`, so a feature flips from "Coming soon" to "Live" when its page ships. The security section lists only controls that exist today. The auth pages' logo now links to the landing page.
+

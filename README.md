@@ -30,7 +30,7 @@ npm install
 npm run dev        # http://localhost:5173
 ```
 
-Demo login (after `npm run migrate` in mini-payment-server): `demo@example.com` / `MiniPay@2026`, or use the buttons on the sign-in page. See [docs/MASTER_DATA.md](docs/MASTER_DATA.md).
+Signed-out visitors land on the public landing page (`/welcome`). Demo login (after `npm run migrate` in mini-payment-server): `demo@example.com` / `MiniPay@2026`, or use the buttons on the sign-in page. See [docs/MASTER_DATA.md](docs/MASTER_DATA.md).
 
 ## Scripts
 

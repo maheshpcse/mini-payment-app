@@ -14,7 +14,7 @@ const QR_CELLS = Array.from({ length: 49 }, (_, index) => {
  * into CSS variables on animation frames (no React re-renders). Static for
  * touch-only devices and when the user prefers reduced motion.
  */
-export function AuthScene() {
+export function AuthScene({ centered = false }: { centered?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export function AuthScene() {
   }, []);
 
   return (
-    <div ref={ref} className={styles.scene} aria-hidden="true" data-testid="auth-scene">
+    <div ref={ref} className={`${styles.scene} ${centered ? styles.centered : ''}`} aria-hidden="true" data-testid="auth-scene">
       <div className={styles.glowA} />
       <div className={styles.glowB} />
       <div className={styles.stage}>
