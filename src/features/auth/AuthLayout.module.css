@@ -415,6 +415,34 @@
   }
 }
 
+/* Full-width hero use (landing page): keep the whole stage centred at every width. */
+@media (max-width: 959px) {
+  .centered .stage {
+    top: 72px;
+    right: auto;
+    left: 50%;
+    margin-left: -210px;
+    opacity: 1;
+    scale: 0.9;
+    transform-origin: top center;
+  }
+
+  .centered .coin {
+    display: grid;
+  }
+
+  .centered .toast {
+    display: inline-flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .centered .stage {
+    top: 52px;
+    scale: 0.66;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .layer,
   .coin {
