@@ -6,15 +6,19 @@ Stack: **React 19 + Vite 8 + TypeScript**, React Router, TanStack Query (server 
 
 ## Status
 
-Foundation + Design System stage. See [docs/MEMORY.md](docs/MEMORY.md) for the current state and [TASKS.md](TASKS.md) for the evidence-based backlog.
+Foundation, design system, authentication and account stage. See [docs/MEMORY.md](docs/MEMORY.md) for the current state and [TASKS.md](TASKS.md) for the evidence-based backlog.
 
 | Implemented | Not implemented yet |
 | --- | --- |
-| Floating nav island, floating collapsible sidebar (left/right), utility dock, mobile bottom bar + drawer | Auth, dashboard data, payments, contacts, transactions, QR |
-| Light/dark/system themes with semantic tokens | Socket.IO, notifications, toasts |
+| Floating nav island, floating collapsible sidebar (left/right, centered icon rail with hover tooltips), utility dock, mobile bottom bar + drawer | Payments, contacts, transactions, QR |
+| Sign in, sign up, forgot/reset password, protected routes, silent refresh; interactive 3D auth scene | OTP, PIN, device confirmation |
+| Profile, edit profile, avatar upload/view/change/remove with initials fallback | Real email/SMS/push delivery (backend BE-015) |
+| Settings: appearance, notification channels (browser push permission), payment limits, change password, sessions | Socket.IO, notification center, toasts |
+| Wallets: sandbox MiNi wallet, linked bank accounts and UPI IDs, default method | Wallet ledger and top-ups (backend BE-010) |
+| Light/dark/system themes with semantic tokens | |
 | Centralized API client (timeouts, cancellation, request ids, error normalization, safe retries) | Custom cursor, 3D character/objects, smooth scroll |
 | Live API readiness indicator | Playwright E2E |
-| Design-system page, honest "planned" pages, 404, error boundary | Developer Lab content and diagrams |
+| Honest "planned" pages, 404, error boundary | |
 
 ## Quick start
 

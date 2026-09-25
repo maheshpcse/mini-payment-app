@@ -14,13 +14,17 @@ The browser is not a security boundary. Authentication, authorization, amounts, 
 | External links use `rel="noreferrer"` | `UtilityDock.tsx` |
 | Sandbox mode visibly labelled; no fabricated balances or transactions | dock, home, planned pages |
 | Production dependency audit in CI | `.github/workflows/ci.yml` |
+| Access token in memory only (never localStorage); refresh token is the API's HttpOnly cookie; single-flight refresh; sign-out clears the Query cache | `features/auth/session-store.ts`, `api/client.ts`, `app.test.tsx` |
+| Route guards are UX only; `?next=` accepts same-app paths only (no open redirect) | `features/auth/RequireAuth.tsx`, `redirect.ts`, `auth.test.tsx` |
+| Avatars re-encoded client-side (center crop, 320 px WebP/JPEG), which strips EXIF/GPS metadata before upload; the API re-checks type by magic bytes and size | `shared/lib/image.ts` |
+| Bank account numbers are sent once and never displayed back (API returns last 4 only); the confirm field blocks paste | `features/wallets/AddMethodDialogs.tsx` |
+| Password fields use `autocomplete` new/current-password; strength meter is guidance only, the API enforces the rule | `shared/ui/PasswordField.tsx` |
 
 ## Planned
 
 | Control | Design | Task |
 | --- | --- | --- |
-| Token handling | Access token in memory only (never localStorage); refresh token in httpOnly Secure SameSite cookie set by the API; single-flight refresh; logout clears Query cache and socket | FE-004 |
-| Route guards | UX only; every API call is authorized server-side | FE-004 |
+| Socket sign-out | Disconnect the socket on sign-out | FE-011 |
 | PIN/OTP inputs | Never logged, never persisted, cleared from state after submission; `autocomplete="one-time-code"` for OTP | FE-003, FE-004 |
 | Idempotency | One key per payment intent; reused on retry of the same intent | FE-008 |
 | QR | Render/parse only backend-signed payloads; no secrets or real account data | FE-010 |

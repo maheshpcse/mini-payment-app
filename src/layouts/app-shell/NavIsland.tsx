@@ -1,6 +1,7 @@
 import { Bell, Menu, Search, Send, Wallet } from 'lucide-react';
 import { Link, NavLink } from 'react-router';
 import { BrandMark } from '../../shared/ui/BrandMark';
+import { AccountMenu } from './AccountMenu';
 import styles from './AppShell.module.css';
 import { ThemeSwitcher } from './ThemeSwitcher';
 
@@ -21,7 +22,7 @@ export function NavIsland({ onOpenMenu }: { onOpenMenu(): void }) {
       </button>
 
       <div className={styles.navActions}>
-        <NavLink to="/accounts" className={styles.balanceChip} aria-label="Sandbox wallet (balance available after sign-in)">
+        <NavLink to="/wallets" className={styles.balanceChip} aria-label="Wallets">
           <Wallet size={16} aria-hidden="true" />
           <span className={styles.balanceText}>Sandbox wallet</span>
         </NavLink>
@@ -33,9 +34,7 @@ export function NavIsland({ onOpenMenu }: { onOpenMenu(): void }) {
           <Send size={16} aria-hidden="true" />
           <span>Quick pay</span>
         </NavLink>
-        <span className={styles.avatar} role="img" aria-label="Guest profile">
-          G
-        </span>
+        <AccountMenu />
       </div>
     </header>
   );

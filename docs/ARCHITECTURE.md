@@ -20,7 +20,10 @@ src/
     home/                  sandbox overview
     system-status/         backend readiness query + indicator
     planned/               honest placeholder for unbuilt routes
-    developer-lab/         design-system page (more lab content in FE-016/017)
+    auth/                  session store, route guard, sign in / sign up / password pages, 3D auth scene
+    account/               profile, edit profile, avatar manager, account API hooks
+    settings/              general, notifications, payments and security settings
+    wallets/               sandbox wallet, bank accounts and UPI IDs
     errors/                404 + route error boundary
   shared/
     ui/                    design-system primitives (Button, TextField, ...)
@@ -36,7 +39,7 @@ Planned additions follow the master prompt's feature-oriented structure: `featur
 | State | Owner | Status |
 | --- | --- | --- |
 | Server state | TanStack Query (per-feature query keys; socket events update caches) | In use (readiness) |
-| Auth state | Dedicated auth context/store; access token in memory only | FE-004 |
+| Auth state | `features/auth/session-store.ts` (`useSyncExternalStore`); access token in memory only, refresh cookie is HttpOnly | In use |
 | UI state | Local component state; shell prefs in `useShellPreferences` (localStorage) | In use |
 | Payment draft | Per-flow store holding recipient, amount (minor units), note, source, idempotency key | FE-008 |
 | Notification state | Toast queue + notification center (server-backed list) | FE-011 |
@@ -49,11 +52,12 @@ Planned additions follow the master prompt's feature-oriented structure: `featur
 - Timeout (default 10 s) and caller cancellation via `AbortSignal`.
 - Error normalization to `ApiError { code, message, status, requestId, details }`; client-only codes `NETWORK_ERROR`, `TIMEOUT`, `ABORTED`, `INVALID_RESPONSE`.
 - Retries only for GET on network errors, timeouts and 502/503/504, with exponential backoff. Never for POST/PUT/PATCH/DELETE; payments rely on the backend `Idempotency-Key` contract.
-- `credentials: 'include'` so the planned httpOnly refresh cookie works. The auth task adds an access-token provider and single-flight refresh on 401 (FE-004).
+- `credentials: 'include'` so the HttpOnly refresh cookie is sent.
+- Auth hooks from the session store attach `Authorization: Bearer`; a 401 with `UNAUTHENTICATED` / `AUTH_SESSION_EXPIRED` triggers one single-flight refresh and one replay. Auth endpoints are called with `anonymous: true`.
 
 ## Routing
 
-`createBrowserRouter` with the shell as layout route and `RouteErrorPage` as error boundary. Routes for not-yet-built features are generated from `config/navigation.ts` and render `PlannedFeaturePage`. Protected routes arrive with FE-004 and are UX only — the backend enforces authorization.
+`createBrowserRouter` with the shell as layout route and `RouteErrorPage` as error boundary. Routes for not-yet-built features are generated from `config/navigation.ts` and render `PlannedFeaturePage`. `RequireAuth` wraps the shell: on load it restores the session through `POST /auth/refresh`, and anonymous visitors go to `/login?next=…` (`safeNextPath` accepts same-app paths only). Guards are UX only — the backend enforces authorization.
 
 On client navigation, focus moves to `<main>` and the page scrolls to top; a skip link is the first focusable element.
 

@@ -12,11 +12,11 @@ Update after every work session: what changed, checks actually run, limits, next
 
 ## 24 September 2026 — Foundation and design system v1
 
-**Done:** FE-001 (tooling, API client, theme, floating shell, routing, 404/error boundary, live API status, CI file) and FE-002 (tokens, typography, Button, StatusPill, AmountDisplay, TextField, Island, BrandMark, design-system page). Full documentation set created.
+**Done:** FE-001 (tooling, API client, theme, floating shell, routing, 404/error boundary, live API status, CI file) and FE-002 (tokens, typography, Button, StatusPill, AmountDisplay, TextField, Island, BrandMark). Full documentation set created.
 
-**Checks run:** `npm run check` → lint, typecheck, 42 tests, production build passing. Browser walkthrough against the live backend (MongoDB 8.2.6 replica set + Redis 7.0.15): light and dark home, API online indicator, sidebar collapse and right-side docking, planned Pay page, design-system page (floating labels, loading button), 404, mobile 390 px with bottom bar and drawer (Esc closes).
+**Checks run:** `npm run check` → lint, typecheck, 42 tests, production build passing. Browser walkthrough against the live backend (MongoDB 8.2.6 replica set + Redis 7.0.15): light and dark home, API online indicator, sidebar collapse and right-side docking, planned Pay page, component showcase (floating labels, loading button; page since removed), 404, mobile 390 px with bottom bar and drawer (Esc closes).
 
-**Fixed after review:** sidebar showed a horizontal scrollbar and clipped "Soon" tags on long Lab labels (grid column sized to the longest item; fixed with `minmax(0, 1fr)` + `min-width: 0` so labels ellipsize); decorative orb overlapped the sandbox-wallet copy. Re-verified with headless Chrome screenshots at 1440×1300 (light home, dark design-system page).
+**Fixed after review:** sidebar showed a horizontal scrollbar and clipped "Soon" tags on long labels (grid column sized to the longest item; fixed with `minmax(0, 1fr)` + `min-width: 0` so labels ellipsize); decorative orb overlapped the sandbox-wallet copy. Re-verified with headless Chrome screenshots at 1440×1300 (light and dark).
 
 **Not verified:** CI run (FE-025); Playwright/axe automation; Safari/Firefox.
 
@@ -30,4 +30,16 @@ Update after every work session: what changed, checks actually run, limits, next
 
 **Not verified:** a live Pages deployment and the workflow run itself (needs repository settings and the `API_BASE_URL` variable).
 
-**Open question:** shared `maheshpcse.github.io` origin and cross-site refresh cookies — prefer custom domains before FE-004.
+**Open question:** shared `maheshpcse.github.io` origin and cross-site refresh cookies — resolved for now with `SameSite=None; Secure; Partitioned` refresh cookies (see DEPLOYMENT.md); custom domains remain the long-term fix.
+
+## 24 September 2026 — Authentication, account pages, wallets
+
+**Done:** Developer Lab removed (navigation, routes, docs). Collapsed rail centring and hover tooltips. Auth pages with an interactive CSS 3D scene (pointer parallax, disabled for reduced motion and coarse pointers); session store with in-memory access token; profile, avatar, settings, notifications, payment settings, security and wallets pages. Backed by mini-payment-server BE-004 and the accounts APIs. Evidence in TASKS.md.
+
+**Checks run:** `npm run check` (108 tests). Headless Chrome walkthrough against the local API, including avatar upload and linking a UPI ID and bank account.
+
+**Fixed after review:** sign-out notice was lost because the route guard's redirect replaced the navigation; sign-out now records the reason in the session store and the guard redirects with it. QR tile clipped at the top of the auth scene; coin and toast overlapping the mobile headline.
+
+**Not verified:** Safari/Firefox, live Pages + Railway cross-site cookie (needs `JWT_SECRET` set on Railway).
+
+**Next bounded task:** FE-003 remaining primitives (toast, OTP/PIN inputs), then OTP login with BE-007.

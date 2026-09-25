@@ -166,18 +166,6 @@
   transform: translateY(-1px);
 }
 
-.avatar {
-  display: inline-grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 14px 14px 14px 5px;
-  background: var(--gradient-signature);
-  color: #fff;
-  font-family: var(--font-display);
-  font-weight: 700;
-}
-
 .segmented {
   display: inline-flex;
   padding: 3px;
@@ -338,13 +326,113 @@
   text-overflow: ellipsis;
 }
 
+/* Collapsed rail: the gutter is reserved on both edges so icons stay on the rail's centre line
+   while short viewports still show a (thin) scrollbar. */
+.sidebar[data-collapsed='true'] .sidebarScroll {
+  padding-inline: 0;
+  scrollbar-gutter: stable both-edges;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+.sidebar[data-collapsed='true'] .navList {
+  justify-items: center;
+}
+
 .sidebar[data-collapsed='true'] .navItem {
   justify-content: center;
+  width: 46px;
+  min-height: 46px;
   padding: 0;
+  border-radius: 14px;
 }
 
 .sidebar[data-collapsed='true'] .navLabel {
   display: none;
+}
+
+.sidebar[data-collapsed='true'] .navItemActive::before {
+  left: -12px;
+}
+
+.sidebar[data-collapsed='true'][data-side='right'] .navItemActive::before {
+  right: -12px;
+  left: auto;
+}
+
+.sidebar[data-collapsed='true'] .navGroup + .navGroup {
+  margin-inline: var(--space-4);
+}
+
+.navTooltip {
+  position: fixed;
+  z-index: var(--z-drawer);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 7px 12px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  background: var(--surface-elevated);
+  box-shadow: var(--shadow-floating);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(0, -50%);
+  animation: tooltip-in-right var(--duration-base) var(--ease-out);
+}
+
+.navTooltip::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -6px;
+  width: 10px;
+  height: 10px;
+  border-bottom: 1px solid var(--border-subtle);
+  border-left: 1px solid var(--border-subtle);
+  background: var(--surface-elevated);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.navTooltip[data-side='right'] {
+  transform: translate(-100%, -50%);
+  animation-name: tooltip-in-left;
+}
+
+.navTooltip[data-side='right']::before {
+  right: -6px;
+  left: auto;
+  border: 0;
+  border-top: 1px solid var(--border-subtle);
+  border-right: 1px solid var(--border-subtle);
+}
+
+.navTooltipTag {
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-tint);
+  color: var(--text-muted);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@keyframes tooltip-in-right {
+  from {
+    opacity: 0;
+    transform: translate(-6px, -50%);
+  }
+}
+
+@keyframes tooltip-in-left {
+  from {
+    opacity: 0;
+    transform: translate(calc(-100% + 6px), -50%);
+  }
 }
 
 .plannedTag {
@@ -518,7 +606,22 @@
 
   .sidebar[data-collapsed='true'] .navItem {
     justify-content: flex-start;
+    width: auto;
+    min-height: 42px;
     padding: 0 var(--space-3);
+    border-radius: var(--radius-sm);
+  }
+
+  .sidebar[data-collapsed='true'] .navList {
+    justify-items: stretch;
+  }
+
+  .sidebar[data-collapsed='true'] .sidebarScroll {
+    padding-inline: var(--space-3);
+  }
+
+  .sidebar[data-collapsed='true'] .navGroup + .navGroup {
+    margin-inline: 0;
   }
 
   .sidebar[data-collapsed='true'] .navGroupTitle {

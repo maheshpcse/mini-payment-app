@@ -1,0 +1,55 @@
+.alert {
+  --alert-color: var(--payment-info);
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--alert-color) 35%, transparent);
+  border-radius: var(--radius-sm) var(--radius-sm) var(--radius-sm) var(--radius-xs);
+  background: color-mix(in srgb, var(--alert-color) 9%, var(--surface-elevated));
+  font-size: var(--text-sm);
+  animation: alert-in var(--duration-base) var(--ease-out);
+}
+
+.success {
+  --alert-color: var(--payment-success);
+}
+
+.danger {
+  --alert-color: var(--payment-danger);
+}
+
+.warning {
+  --alert-color: var(--payment-warning);
+}
+
+.icon {
+  flex: none;
+  margin-top: 1px;
+  color: var(--alert-color);
+}
+
+.body {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-weight: 700;
+}
+
+.text {
+  color: var(--text-secondary);
+}
+
+.text p {
+  margin: 0;
+}
+
+@keyframes alert-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}

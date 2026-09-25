@@ -11,7 +11,6 @@ A premium, highly interactive **sandbox** payment web app with an original visua
 | User | Needs |
 | --- | --- |
 | Consumer | Send, request, scan and pay quickly; see balance and history clearly; trust what is happening |
-| Learner / developer | Explore the architecture in a separate Developer & Architecture Lab |
 
 ## Requirements
 
@@ -21,8 +20,8 @@ A premium, highly interactive **sandbox** payment web app with an original visua
 | U-02 | Floating nav island (brand, search, quick pay, notifications, balance shortcut, avatar) | FE-001 | Implemented; search and balance activate with FE-007/FE-006 |
 | U-03 | Floating sidebar not touching island/top/dock; collapse; icon-only; left/right | FE-001 | Implemented |
 | U-04 | No footer; floating utility dock; mobile bottom navigation | FE-001 | Implemented |
-| U-05 | Separate Developer & Architecture Lab navigation | FE-001, FE-016, FE-017 | Navigation implemented; content planned |
-| U-06 | Authentication pages and protected routes | FE-004 | Planned |
+| U-05 | Account area: profile, avatar (initials fallback), settings, notification channels, payment settings, wallets | FE-006, FE-015 | Implemented (sandbox); delivery of alerts and wallet ledger depend on BE-015 / BE-010 |
+| U-06 | Authentication pages and protected routes | FE-004 | Implemented: sign in, sign up, forgot/reset password, route guard; OTP and PIN planned |
 | U-07 | Dashboard with balance, quick actions, recent activity, bills, rewards, insights, alerts | FE-006 | Planned (sandbox-labelled home exists) |
 | U-08 | Quick payment flow ending in receipt | FE-008 | Planned |
 | U-09 | QR generate/scan/upload/camera/merchant simulation | FE-010 | Planned |

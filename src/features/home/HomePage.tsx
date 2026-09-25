@@ -1,6 +1,9 @@
 import { ArrowDownLeft, Landmark, ScanLine, Send, ShieldCheck, Sparkles } from 'lucide-react';
 import { Link } from 'react-router';
-import { PRIMARY_NAV } from '../../config/navigation';
+import { PAYMENT_NAV } from '../../config/navigation';
+import { formatInr } from '../../shared/lib/money';
+import { usePreferences, useWallet } from '../account/account-api';
+import { useCurrentUser } from '../auth/useSession';
 import { Island } from '../../shared/ui/Island';
 import { StatusPill } from '../../shared/ui/StatusPill';
 import { SystemStatusIndicator } from '../system-status/SystemStatusIndicator';
@@ -14,7 +17,10 @@ const QUICK_ACTIONS = [
 ];
 
 export function HomePage() {
-  const upcoming = PRIMARY_NAV.filter((item) => item.task);
+  const upcoming = PAYMENT_NAV.filter((item) => item.task);
+  const user = useCurrentUser();
+  const wallet = useWallet();
+  const hideBalance = usePreferences().data?.payments.hideBalance ?? false;
 
   return (
     <div className={styles.page}>
@@ -32,9 +38,14 @@ export function HomePage() {
 
         <Island tone="signature" className={styles.balanceIsland} aria-label="Sandbox wallet">
           <div className={styles.orb} aria-hidden="true" />
-          <p className={styles.balanceLabel}>Sandbox wallet</p>
-          <p className={styles.balancePending}>Sign in to see your sandbox balance</p>
-          <p className={styles.balanceHint}>Wallet and ledger arrive with FE-006 / BE-010.</p>
+          <p className={styles.balanceLabel}>Hi {user.firstName}, your sandbox wallet</p>
+          <p className={styles.balancePending}>{wallet.isPending ? '…' : hideBalance ? '₹ ••••' : formatInr(wallet.data?.balanceMinor ?? 0)}</p>
+          <p className={styles.balanceHint}>
+            {wallet.data ? `${wallet.data.linked.bankAccounts} bank · ${wallet.data.linked.upiIds} UPI linked · ` : ''}
+            <Link to="/wallets" className={styles.balanceLink}>
+              Manage wallets
+            </Link>
+          </p>
         </Island>
       </section>
 
