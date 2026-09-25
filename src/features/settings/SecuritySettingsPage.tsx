@@ -11,7 +11,8 @@ import { StatusPill } from '../../shared/ui/StatusPill';
 import { accountKeys } from '../account/account-api';
 import styles from '../account/Account.module.css';
 import { authApi } from '../auth/auth-api';
-import { useSignOut } from '../auth/useSession';
+import { DemoNotice } from '../auth/DemoNotice';
+import { useCurrentUser, useSignOut } from '../auth/useSession';
 import { describeDevice } from './device';
 import { PageLoading } from './PageLoading';
 
@@ -26,7 +27,7 @@ function timeAgo(iso: string): string {
 }
 
 
-function ChangePasswordForm() {
+function ChangePasswordForm({ locked }: { locked: boolean }) {
   const [values, setValues] = useState({ current: '', next: '', confirm: '' });
   const [errors, setErrors] = useState<Record<string, string | undefined>>({});
   const [message, setMessage] = useState<{ tone: 'success' | 'danger'; text: string } | null>(null);
@@ -60,20 +61,23 @@ function ChangePasswordForm() {
 
   return (
     <form className={styles.form} onSubmit={onSubmit} noValidate>
+      {locked && <DemoNotice>Everyone shares this password, so it cannot be changed.</DemoNotice>}
       {message && <Alert tone={message.tone} title={message.text} />}
-      <PasswordField label="Current password" autoComplete="current-password" value={values.current} onChange={set('current')} error={errors.current} />
-      <PasswordField label="New password" autoComplete="new-password" value={values.next} onChange={set('next')} error={errors.next} showStrength />
-      <PasswordField label="Confirm new password" autoComplete="new-password" value={values.confirm} onChange={set('confirm')} error={errors.confirm} />
-      <div className={styles.formActions}>
-        <Button type="submit" icon={<KeyRound size={18} />} loading={change.isPending} loadingLabel="Changing password">
-          Change password
-        </Button>
-      </div>
+      <fieldset className={styles.fieldset} disabled={locked}>
+        <PasswordField label="Current password" autoComplete="current-password" value={values.current} onChange={set('current')} error={errors.current} />
+        <PasswordField label="New password" autoComplete="new-password" value={values.next} onChange={set('next')} error={errors.next} showStrength />
+        <PasswordField label="Confirm new password" autoComplete="new-password" value={values.confirm} onChange={set('confirm')} error={errors.confirm} />
+        <div className={styles.formActions}>
+          <Button type="submit" icon={<KeyRound size={18} />} loading={change.isPending} loadingLabel="Changing password">
+            Change password
+          </Button>
+        </div>
+      </fieldset>
     </form>
   );
 }
 
-function SessionsCard() {
+function SessionsCard({ locked }: { locked: boolean }) {
   const queryClient = useQueryClient();
   const signOut = useSignOut();
   const sessions = useQuery({ queryKey: accountKeys.sessions, queryFn: authApi.sessions });
@@ -87,7 +91,7 @@ function SessionsCard() {
       <div className={styles.cardHeader}>
         <div>
           <h2 id="sessions-title">Signed-in devices</h2>
-          <p>Sign out anything you do not recognise.</p>
+          <p>{locked ? 'Only this browser is listed: other visitors of the demo account stay private.' : 'Sign out anything you do not recognise.'}</p>
         </div>
       </div>
       {sessions.isPending ? (
@@ -124,7 +128,7 @@ function SessionsCard() {
       )}
       {revoke.isError && <Alert tone="danger" title={errorMessage(revoke.error)} />}
       <div className={styles.formActions}>
-        <Button variant="danger" icon={<LogOut size={18} />} onClick={() => void signOut({ everywhere: true })}>
+        <Button variant="danger" icon={<LogOut size={18} />} onClick={() => void signOut({ everywhere: true })} disabled={locked}>
           Sign out of all devices
         </Button>
       </div>
@@ -133,6 +137,7 @@ function SessionsCard() {
 }
 
 export function SecuritySettingsPage() {
+  const locked = useCurrentUser().isDemo === true;
   return (
     <div className={styles.grid}>
       <Island as="article" aria-labelledby="password-title">
@@ -142,9 +147,9 @@ export function SecuritySettingsPage() {
             <p>Changing it signs out every other device.</p>
           </div>
         </div>
-        <ChangePasswordForm />
+        <ChangePasswordForm locked={locked} />
       </Island>
-      <SessionsCard />
+      <SessionsCard locked={locked} />
     </div>
   );
 }

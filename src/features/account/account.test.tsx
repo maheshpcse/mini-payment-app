@@ -173,3 +173,33 @@ describe('security settings', () => {
     expect(api.callsTo('POST /auth/password/change')).toHaveLength(0);
   });
 });
+
+describe('demo accounts', () => {
+  const DEMO_USER = { ...TEST_USER, isDemo: true };
+
+  it('turns off password and device changes on the security page', async () => {
+    mockApi();
+    renderApp('/settings/security', { user: DEMO_USER });
+    expect(await screen.findByLabelText('Current password')).toBeDisabled();
+    expect(screen.getByRole('button', { name: /change password/i })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Sign out of all devices' })).toBeDisabled();
+    expect(screen.getByText('Everyone shares this password, so it cannot be changed.')).toBeInTheDocument();
+  });
+
+  it('explains the restrictions on the profile and locks editing and the photo', async () => {
+    mockApi();
+    renderApp('/profile', { user: DEMO_USER });
+    expect(await screen.findByText('Shared demo account')).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Edit profile' })).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'View profile photo' }));
+    expect(await screen.findByRole('button', { name: 'Upload photo' })).toBeDisabled();
+  });
+
+  it('shows the edit form read-only if opened directly', async () => {
+    const api = mockApi();
+    renderApp('/profile/edit', { user: DEMO_USER });
+    expect(await screen.findByLabelText('First name')).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Save changes' })).toBeDisabled();
+    expect(api.callsTo('PATCH /users/me')).toHaveLength(0);
+  });
+});
