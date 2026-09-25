@@ -35,6 +35,7 @@ Delivery order (master prompt §45): Foundation → Design System → Authentica
 | FE-025 | P1 | CI validation | GitHub Actions workflow runs green on PR | CI link | FE-001 | Ready |
 | FE-026 | P1 | Deployment | GitHub Pages deployment | `deploy-pages.yml` (lint, test, `build:pages`, Pages artifact + deploy); `--mode pages` base path from `configure-pages`; router basename; build fails on missing/insecure API URL; `404.html` SPA fallback + `.nojekyll`; `docs/DEPLOYMENT.md` | `build/github-pages.test.ts`; `build:pages` rejected invalid config and produced prefixed assets; Pages-like static server: deep link and unknown route rendered in Chrome | FE-001 | Done |
 | FE-027 | P1 | Demo login | One-click demo sign-in on the login page (`VITE_DEMO_LOGIN`); `isDemo` users see a shared-account notice and restricted controls (profile edit, avatar, password, sign out everywhere) disabled; auth showcase pinned while the form column scrolls; `docs/MASTER_DATA.md` | Tests for demo sign-in and disabled controls; browser check against the seeded API | FE-004, BE-036 | Done |
+| FE-029 | P1 | Landing page | Public `/welcome` (signed-out visitors to `/` land here): hero with the 3D scene, features generated from `navigation.ts` with Live / Coming soon, how it works, security safeguards actually in place, demo sign-in band, FAQ, footer; light/dark, 390–1440 px; CTAs switch to Open app when signed in | `landing.test.tsx`; browser check at 1440 / 768 / 390 and dark | FE-027 | Done |
 | FE-028 | P2 | Staff console | Render navigation from `GET /menus`; ADMINISTRATION pages for users, payments, refunds, billers, limits, reconciliation, roles, settings, audit log, reports, each gated by its permission | Tests per role; E2E with staff demo accounts | FE-027, BE-005, BE-006 | Planned |
 
 ## Evidence
@@ -59,4 +60,10 @@ Delivery order (master prompt §45): Foundation → Design System → Authentica
 - `auth.test.tsx`: demo button signs in with `demo@example.com` / `MiniPay@2026` and lands on home. `account.test.tsx`: for `isDemo` users the password form, "Sign out of all devices", photo upload and profile fields are disabled, and the "Edit profile" link is hidden.
 - Headless Chrome against the local API after `npm run migrate` in mini-payment-server: one-click demo sign-in, seeded UPI ID and bank account on Wallets, restricted security and profile pages; on `/signup` at 1440 × 800 the left showcase stays in place while the page scrolls to the submit button; 390 px layout unchanged.
 - **Not done:** navigation from `GET /menus` and the staff console (FE-028); forms reading `GET /masters` (bank list and UPI handles are still local copies).
+
+### FE-029 — Landing page (Done, 25 Sep 2026)
+
+- `npm run check` → lint, typecheck, 11 files / 116 tests, production build passing.
+- `landing.test.tsx`: signed-out `/` redirects to `/welcome`; header links to sign in / sign up; Wallets marked Live and Pay Coming soon; "Try the live demo" signs in as `demo@example.com` and opens home; signed-in visitors get "Open MiNi Pay" and no demo sections.
+- Headless Chrome against the local API: 1440 px (all sections, light and dark), 768 and 390 px with no horizontal overflow; QR tile clipping in the narrow hero fixed and re-checked; demo sign-in from the hero; header shows "Open app" once signed in.
 

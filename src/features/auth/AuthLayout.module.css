@@ -418,7 +418,7 @@
 /* Full-width hero use (landing page): keep the whole stage centred at every width. */
 @media (max-width: 959px) {
   .centered .stage {
-    top: 36px;
+    top: 72px;
     right: auto;
     left: 50%;
     margin-left: -210px;
@@ -438,7 +438,7 @@
 
 @media (max-width: 480px) {
   .centered .stage {
-    top: 20px;
+    top: 52px;
     scale: 0.66;
   }
 }

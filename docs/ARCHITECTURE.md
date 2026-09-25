@@ -19,6 +19,7 @@ src/
   features/
     home/                  sandbox overview
     system-status/         backend readiness query + indicator
+    landing/               public landing page (/welcome)
     planned/               honest placeholder for unbuilt routes
     auth/                  session store, route guard, sign in / sign up / password pages, 3D auth scene
     account/               profile, edit profile, avatar manager, account API hooks
@@ -57,7 +58,7 @@ Planned additions follow the master prompt's feature-oriented structure: `featur
 
 ## Routing
 
-`createBrowserRouter` with the shell as layout route and `RouteErrorPage` as error boundary. Routes for not-yet-built features are generated from `config/navigation.ts` and render `PlannedFeaturePage`. `RequireAuth` wraps the shell: on load it restores the session through `POST /auth/refresh`, and anonymous visitors go to `/login?next=…` (`safeNextPath` accepts same-app paths only). Guards are UX only — the backend enforces authorization.
+`createBrowserRouter` with the shell as layout route and `RouteErrorPage` as error boundary. Routes for not-yet-built features are generated from `config/navigation.ts` and render `PlannedFeaturePage`. `RequireAuth` wraps the shell: on load it restores the session through `POST /auth/refresh`, and anonymous visitors go to `/login?next=…` (`safeNextPath` accepts same-app paths only), except the site root, which sends them to the public landing page at `/welcome` (`features/landing`). The landing page is outside both layouts and adapts its calls to action to the session (Get started / demo vs Open app). Guards are UX only — the backend enforces authorization.
 
 On client navigation, focus moves to `<main>` and the page scrolls to top; a skip link is the first focusable element.
 
