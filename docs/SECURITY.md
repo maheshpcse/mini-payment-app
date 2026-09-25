@@ -6,7 +6,7 @@ The browser is not a security boundary. Authentication, authorization, amounts, 
 
 | Control | Source |
 | --- | --- |
-| No secrets in client code; only public `VITE_API_BASE_URL` and `VITE_APP_ENV` | `.env.example`, `src/config/env.ts` |
+| No secrets in client code; only public `VITE_API_BASE_URL`, `VITE_APP_ENV` and `VITE_DEMO_LOGIN` (the demo password is intentionally public) | `.env.example`, `src/config/env.ts` |
 | `.env` git-ignored | `.gitignore` |
 | API errors normalized; raw server internals never rendered | `src/api/client.ts` |
 | No automatic retries of state-changing requests | `src/api/client.ts` (+ tests) |
